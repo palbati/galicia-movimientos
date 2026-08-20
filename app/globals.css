@@ -1,0 +1,60 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* ── Base ──────────────────────────────────────────────────────────────── */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-surface-2);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis-weight: none;
+}
+
+/* Every number in the interface is tabular. This is the single declaration
+   that makes magnitudes comparable at a glance — the rest of the amount
+   design depends on it. Applied via .num rather than globally so that body
+   copy keeps proportional figures. */
+.num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  letter-spacing: 0;
+}
+
+/* Focus: visible, brand-anchored, never removed. */
+:where(a, button, [role="button"], [tabindex]):focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Hero ground ────────────────────────────────────────────────────────────
+   One ground at every width: Galicia's orange with white type, the corporate
+   branding rule. It used to flip to a white header below 1024px, which was the
+   single biggest reason the phone and the desktop read as two different
+   products instead of one responsive app.
+
+   There is no secondary ink here on purpose — hierarchy inside the band is size
+   and weight. See --color-hero-ink in tokens.css for the measured ratio. */
+.hero {
+  --hero-bg:   var(--color-hero);
+  --hero-fg:   var(--color-hero-ink);
+  --hero-line: var(--color-hero-line);
+}
+
+/* Skeleton pulse. Opacity, not a sweeping highlight — a shimmer is a gradient. */
+@keyframes skeleton-pulse { 0%, 100% { opacity: 1 } 50% { opacity: 0.5 } }

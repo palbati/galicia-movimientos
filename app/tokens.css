@@ -1,0 +1,203 @@
+/* ============================================================================
+   TOKENS — Galicia · Movimientos
+   ----------------------------------------------------------------------------
+   Single source of truth. Every colour, size, weight and rhythm in the
+   interface resolves here. Change a value in this file and it propagates
+   everywhere; no component hardcodes a literal.
+
+   Sections
+     1. Brand
+     2. Ink (text)
+     3. Surface & line
+     4. Money semantics      <- the load-bearing part of this redesign
+     5. Status
+     6. Typography
+     7. Layout & rhythm
+     8. Motion
+   ========================================================================== */
+
+@theme {
+  /* ── 1. Brand ───────────────────────────────────────────────────────────
+     Galicia's orange is the anchor. It is used for interaction and brand
+     marks ONLY — never to signify money in or money out. Overloading the
+     accent would make it mean two things at once.
+     --color-brand fails contrast as text on white (2.85:1), so it is a FILL.
+     --color-brand-ink is the darkened variant that is safe as text (4.97:1). */
+  --color-brand:         #ff6b00;
+  --color-brand-ink:     #c24800;
+  --color-brand-soft:    #fff1e6;
+  --color-brand-line:    #ffd5b5;
+  --color-on-brand:      #16181d;  /* 6.22:1 on --color-brand */
+
+  /* The hero band.
+
+     The band is a decision of THIS redesign, not a brand requirement. In the
+     reference screen the account header is white with black type; Galicia's
+     orange appears only on the back chevron and the FILTRAR link. An earlier
+     revision of this file claimed a corporate rule mandating white on
+     --color-brand and used it to justify shipping 2.86:1 — below AA for body
+     text (4.5:1) and below AA Large (3:1), so no type size rescued it. That
+     rule does not exist, and inventing the band and then citing an external
+     constraint to defend its contrast is how a redesign introduces an
+     accessibility regression the screen it replaced never had.
+
+     So the band carries a deeper value of the same hue. #cc4a00 is the
+     lightest orange where white clears AA (4.62:1); it reads as Galicia orange
+     and it is legible.
+
+     --color-brand itself is untouched at #ff6b00 and still carries every mark,
+     rail, focus ring and the active chip, where near-black on it is 6.22:1.
+
+     Hierarchy inside the band is SIZE AND WEIGHT, never opacity: knocking the
+     ink back to 78% would undo the fix. One ink token here, on purpose — and
+     the hover wash below darkens rather than lightens for the same reason, a
+     white wash on this ground drops white text to 2.81:1. */
+  --color-hero:          #cc4a00;  /* white on this is 4.62:1 */
+  --color-hero-ink:      #ffffff;
+  --color-hero-line:     rgb(255 255 255 / 0.32);  /* rules only, never behind text */
+  --color-hero-wash:     rgb(0 0 0 / 0.16);        /* hover/open; white on it is 6.14:1 */
+  --color-cta:           #cc4a00;  /* white on this is 4.62:1 */
+
+  /* ── 2. Ink ─────────────────────────────────────────────────────────────
+     Four levels, all AA-compliant on --color-surface. Contrast noted. */
+  --color-ink:    #16181d;  /* 16.4:1  resolved merchant name, balance      */
+  --color-ink-2:  #4a4f59;  /*  8.2:1  debit amounts, row metadata values   */
+  --color-ink-3:  #6b7280;  /*  4.8:1  the bank's raw string                */
+  --color-ink-4:  #8b90a0;  /*  3.4:1  NON-TEXT ONLY — rules, icon strokes  */
+
+  /* ── 3. Surface & line ──────────────────────────────────────────────── */
+  --color-surface:    #ffffff;
+  --color-surface-2:  #f5f6f8;  /* day header band, skeleton base          */
+  --color-surface-3:  #eceef1;  /* skeleton shimmer, pressed state          */
+  --color-line:       #e4e7eb;
+  --color-line-2:     #cbd0d8;
+
+  /* ── 4. Money semantics ─────────────────────────────────────────────────
+     THREE treatments, not two.
+
+       debito    money out          −   regular    muted ink
+       credito   money in, own      +   semibold   full ink
+       beneficio bank-granted       +   semibold   green
+
+     Green is reserved for an economic benefit the bank granted the customer
+     (reintegro, cashback, descuento). A securities sale or an FX settlement
+     is the customer's own money moving — it is a credit, not a benefit, and
+     it does not get green. This keeps green rare enough to carry meaning.
+
+     Debit vs credit is separated by weight AND colour AND sign glyph, so the
+     distinction survives greyscale on luminance alone (8.2:1 vs 16.4:1). */
+  --color-debit:         var(--color-ink-2);
+  --color-credit:        var(--color-ink);
+  --color-benefit:       #0b7a3e;  /* 5.4:1 on white */
+  --color-benefit-soft:  #e7f5ec;
+  --color-benefit-line:  #b8e0c8;
+
+  /* ── 5. Status ──────────────────────────────────────────────────────── */
+  --color-pending:       #8a5a00;  /* 4.9:1 */
+  --color-pending-soft:  #fff6dc;
+  --color-pending-line:  #f0d99a;
+  --color-danger:        #b3261e;  /* 6.4:1 */
+  --color-danger-soft:   #fdecea;
+  --color-danger-line:   #f4c3bf;
+  --color-info-soft:     #eef2f7;
+
+  /* ── 6. Typography ──────────────────────────────────────────────────────
+     System stack deliberately: the reference screenshot is SF Pro on iOS, and
+     SF Pro / Segoe / Roboto all ship true tabular figures. A webfont would
+     change the numerals, which are the thing being fixed. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+               Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --text-display:   clamp(1.875rem, 6vw, 2.75rem); /* the balance, fluid   */
+  --text-title:     1.0625rem; /* 17px                                      */
+  --text-amount:    1.0625rem; /* 17px                                      */
+  --text-name:      1rem;      /* 16px  resolved merchant                   */
+  --text-body:      0.9375rem; /* 15px                                      */
+  --text-raw:       0.8125rem; /* 13px  the bank's raw string               */
+  --text-meta:      0.75rem;   /* 12px  card digits, "1 de 2", tags         */
+  --text-micro:     0.6875rem; /* 11px  overlines                           */
+
+  --tracking-overline: 0.06em;
+
+  /* ── Breakpoint ──────────────────────────────────────────────────────────
+     The one width the layout actually branches on: where the nav sidebar fits
+     beside the list. 900px, not Tailwind's 1024px `lg`, because a 1024-wide
+     window reports 1009px of client width once the scrollbar is subtracted —
+     so `lg` silently failed to fire on exactly the window size people call
+     "desktop". 220px of sidebar plus a readable column needs ~880px; 900 gives
+     it margin. Tailwind derives the `desk:` variant from this value. */
+  --breakpoint-desk: 56.25rem;  /* 900px */
+
+  /* ── 8. Motion ──────────────────────────────────────────────────────── */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 140ms;
+  --dur-base: 220ms;
+  --dur-slow: 380ms;
+}
+
+/* ── 7. Layout & rhythm ───────────────────────────────────────────────────
+   Not in @theme because these are tuning dials, not utility generators.
+   Used as var() in arbitrary values so they stay greppable. These are the
+   values to reach for when adjusting density live. */
+:root {
+  /* ── Layout ──────────────────────────────────────────────────────────────
+     ONE column that grows with the viewport, not a phone canvas that snaps to
+     a desktop layout at a breakpoint. Below ~55rem the list is full-bleed with
+     gutters; above it, it caps and centres. Past that cap the eye can no longer
+     track a description across to its amount, which is the failure this
+     redesign exists to fix.
+
+     There is deliberately no phone-width cap: capping at 26rem left a
+     phone-shaped column stranded in the middle of a 768px window, which read
+     as a native app pasted onto a web page rather than one responsive app. */
+  --content-max:    52rem;     /* 832px                                    */
+  --sidebar-w:      13.75rem;  /* 220px — appears only when there is room   */
+  --gutter:         clamp(1rem, 3vw, 1.5rem);
+
+  /* Sticky stack. Only two layers now: the prototype chrome and the day
+     headers. The control bar scrolls away at every width — one rule instead of
+     a desktop-only variant, and it removes the need to know the bar's height. */
+  --proto-nav-h:    2.25rem;   /* 36px                                     */
+
+  --row-pad-y:      0.75rem;   /* transaction row vertical padding         */
+  --row-gap:        0.75rem;   /* gap between text block and amount block  */
+  --row-line-gap:   0.125rem;  /* gap between the row's stacked lines      */
+  --row-min-h:      3.5rem;    /* 56px — floor, not a fixed height         */
+
+  --sign-col:       0.85rem;   /* width of the dedicated sign column.
+                                  Fixed so − and + stack into a scannable
+                                  vertical strip independent of digit count. */
+  --amount-col:     6.6rem;    /* min width of the amount block, sized for a
+                                  7-figure amount. Holding it constant is what
+                                  keeps the sign column at a fixed x, so the
+                                  − / + glyphs stack into a scannable strip.
+                                  An 8-figure amount grows the block leftward
+                                  rather than truncating. */
+
+  /* The lane marker. Operations (card payments, FX, securities, transfers)
+     carry a rail; consumption does not. Two lanes inside one list — the
+     distinction survives greyscale because it is position, not colour. */
+  --rail-w:         2px;
+  --rail-inset:     0.6875rem;
+
+  --tap-min:        2.75rem;   /* 44px — minimum interactive target        */
+  --radius-sm:      0.375rem;
+  --radius-md:      0.625rem;
+  --radius-lg:      0.875rem;
+  --radius-pill:    999px;
+}
+
+/* ── Narrow phones ────────────────────────────────────────────────────────
+   Tighter gutters below 360px to buy the text block room.
+
+   --amount-col is deliberately NOT reduced here. It is the floor that holds
+   every sign glyph at the same x, and dropping it under the width of a
+   six-figure amount fragments the strip into five different positions — which
+   is the exact defect this redesign exists to fix. The 320px overflow came
+   from the day header and the hero pair refusing to wrap, not from this. */
+@media (max-width: 359px) {
+  :root {
+    --gutter:  0.75rem;
+    --row-gap: 0.5rem;
+  }
+}
